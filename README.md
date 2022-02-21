@@ -2,7 +2,7 @@
 
 ## proplems
 (1) Read and write a file as binary (not as test)
-  - What's the other file interfaces that read and write and file as text?
+  - What's the other file interfaces that read and write a file as text?
 <blockquote>
 I learned that there are two file intefaces: [String, Byte array] in the Java lecture.
 </blockquote>
