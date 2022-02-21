@@ -9,11 +9,11 @@ Simple TAR-file archiving program
 
 
 (2) Aceessing a directory
-  - What is the _path_ of a. ile? How it is different from the _name_ of a file?
-  - Write a program that enumerates the aths of all files under a. iven directory and its subdirectories recursively
+  - What is the _path_ of a file? How it is different from the _name_ of a file?
+  - Write a program that enumerates the paths of all files under a given directory and its subdirectories recursively
   - Write a program that copies the entire files and the directory structrue of a given path to another specified path
 
 
 (3) Retrieving file attribute
-  - What is a regular file? Howw one can check if a file is a regular file or not?
+  - What is a regular file? How one can check if a file is a regular file or not?
   - How one can find the size of a file?
