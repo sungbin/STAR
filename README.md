@@ -3,14 +3,20 @@
 ## proplems
 (1) Read and write a file as binary (not as test)
   - What's the other file interfaces that read and write a file as text?
-<blockquote>
-I learned that there are two file intefaces: [String, Byte array] in the Java lecture.
-</blockquote>
-
-  - How accessing a file as binray is different from accessing it as text?
-<blockquote>
-
-</blockquote>
+```C
+ssize_t read(int fildes, void *buf, size_t nbyte);
+ssize_t write(int fildes, const void *buf, size_t nbyte);
+ssize_t pread(int d, void *buf, size_t nbyte, off_t offset), pwrite;
+ssize_t pwrite(int fildes, const void *buf, size_t nbyte, off_t offset);
+int aio_read(struct aiocb *aiocbp);
+int aio_write(struct aiocb *aiocbp);
+```
+  
+  - How accessing a file as binary is different from accessing it as text?
+```
+The minumum units which are read/written by function call are different which other.
+For example, fread() read n-items, and read() read n-bytes.
+```
 
   - Write a program that shows each byte of a given file as a hexadecimal number (like xxd does)
 <blockquote>(on-going) https://github.com/sungbin/STAR/tree/main/byte_to_hexa</blockquote>
