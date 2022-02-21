@@ -13,7 +13,7 @@ I learned that there are two file intefaces: [String, Byte array] in the Java le
 </blockquote>
 
   - Write a program that shows each byte of a given file as a hexadecimal number (like xxd does)
-<blockquote>https://github.com/sungbin/STAR/tree/main/byte_to_hexa</blockquote>
+<blockquote>(on-going) https://github.com/sungbin/STAR/tree/main/byte_to_hexa</blockquote>
 
 (2) Aceessing a directory
   - What is the _path_ of a file? How it is different from the _name_ of a file?
@@ -22,10 +22,10 @@ A path of a file contains its parent directory structure from root or to relativ
 </blockquote>
 
   - Write a program that enumerates the paths of all files under a given directory and its subdirectories recursively
-<blockquote>https://github.com/sungbin/STAR/tree/main/copy_directory</blockquote>
+<blockquote>(on-going) https://github.com/sungbin/STAR/tree/main/copy_directory</blockquote>
 
   - Write a program that copies the entire files and the directory structrue of a given path to another specified path
-<blockquote>https://github.com/sungbin/STAR/tree/main/files_path_recursive</blockquote>
+<blockquote>(on-going) https://github.com/sungbin/STAR/tree/main/files_path_recursive</blockquote>
 
 (3) Retrieving file attribute
   - What is a regular file? How one can check if a file is a regular file or not?
