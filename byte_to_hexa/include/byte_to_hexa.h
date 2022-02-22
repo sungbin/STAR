@@ -1,2 +1,2 @@
-unsigned char*
-byte_to_hexa (char * file_name);
+long int     
+byte_to_hexa (char* byte_buf, long int buf_len, char * file_name);
