@@ -31,9 +31,9 @@ For example, fread() read n-items, and read() read n-bytes.
 A path of a file contains its parent directory structure from root or to relative path. A name of a file is the name of a file in directory hierarchy.
 ```
 + Write a program that enumerates the paths of all files under a given directory and its subdirectories recursively.  
-<blockquote>(on-going) https://github.com/sungbin/STAR/tree/main/copy_directory</blockquote>
+<blockquote>(on-going) https://github.com/sungbin/STAR/tree/main/print_file_path_recursively</blockquote>
 + Write a program that copies the entire files and the directory structure of a given path to another specified path.  
-<blockquote>(on-going) https://github.com/sungbin/STAR/tree/main/files_path_recursive</blockquote>
+<blockquote>(on-going) https://github.com/sungbin/STAR/tree/main/copy_directory</blockquote>
 
 (3) Retrieving file attribute
   - What is a regular file? How one can check if a file is a regular file or not?
