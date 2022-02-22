@@ -1,2 +1,7 @@
-long int     
-byte_to_hexa (char* byte_buf, long int f_size, char * file_name);
+typedef struct _hexa_data {
+	long int len;
+	char * data;
+} hexa_data;
+
+hexa_data
+byte_to_hexa (char * file_name);
