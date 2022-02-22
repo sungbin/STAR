@@ -3,25 +3,39 @@
 
 #include "../include/byte_to_hexa.h"
 
-hexa_data
-byte_to_hexa (char * file_name) {
+long
+byte_to_hexa (char * input_f_name, char * output_f_name) {
 
-	FILE * file = fopen(file_name, "rb");
-	long int f_size;
+	FILE * input_fp = fopen(input_f_name, "rb");
+	FILE * output_fp = fopen(output_f_name, "w");
 
-	// file size
-	fseek(file, 0, SEEK_END);
-	f_size = ftell(file);
-	rewind(file);
+	long f_size = 0;
+	
+	while ( 1 ) {
 
-	// malloc
-	char * byte_buf = (char*)malloc(sizeof(char)*f_size);
+		unsigned char in_buf[64];
+		int buf_size = fread(in_buf, 1, 64, input_fp);
 
-	// read buffer
-	fread(byte_buf, 1, f_size, file);
-	fclose(file);
+		f_size = f_size + buf_size;
+	
+		for (int _idx = 0; _idx < buf_size; _idx = _idx+1) {
+			if (_idx % 16 == 0) {
+				fprintf(output_fp, "\n");
+			}
+			fprintf(output_fp, "%02x", in_buf[_idx]);
+			if (_idx % 2 == 1) {
+				fprintf(output_fp, " ");
+			}
+		}
 
-	hexa_data data = { .len = f_size, .data = byte_buf };
+		if (buf_size < 64) {
+			break;
+		}
+	}
+	fprintf(output_fp, "\n");
 
-	return data;
+	fclose(input_fp);
+	fclose(output_fp);
+
+	return f_size;
 }
