@@ -8,6 +8,7 @@
 int
 main (int argc, char* argv[])
 {
-	print_file_list(argv[1]);
+	print_path_recursive(argv[1]);
+	return 0;
 }
 

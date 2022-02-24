@@ -13,8 +13,8 @@ byte_to_hexa (char * input_f_name, char * output_f_name) {
 	
 	while ( 1 ) {
 
-		unsigned char in_buf[64];
-		int buf_size = fread(in_buf, 1, 64, input_fp);
+		unsigned char in_buf[512];
+		int buf_size = fread(in_buf, 1, 512, input_fp);
 
 		f_size = f_size + buf_size;
 	
@@ -30,7 +30,7 @@ byte_to_hexa (char * input_f_name, char * output_f_name) {
 			}
 		}
 
-		if (buf_size < 64) {
+		if (buf_size < 512) {
 			break;
 		}
 	}
