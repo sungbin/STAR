@@ -22,7 +22,9 @@ byte_to_hexa (char * input_f_name, char * output_f_name) {
 			if (_idx % 16 == 0) {
 				fprintf(output_fp, "\n");
 			}
+
 			fprintf(output_fp, "%02x", in_buf[_idx]);
+
 			if (_idx % 2 == 1) {
 				fprintf(output_fp, " ");
 			}
