@@ -28,7 +28,3 @@ print_file_list_recursively : src/print_file_list_recursively.c
 clean:
 	rm -rf $(BINDIR)
 
-test: $(BIN)
-	gcc test/atoi.c -o bin/test_atoi
-	gcc test/timeout.c -o bin/test_timeout
-
