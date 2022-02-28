@@ -29,8 +29,8 @@ copy_directory (char * target_dir, char * destinated_dir) {
 
 	}
 
-
 	path_recursive(target_dir, destinated_dir, "", &copy);
+
 }
 
 void copy(char * origin_path, char * copied_path, int is_dir) {
@@ -84,8 +84,6 @@ void copy(char * origin_path, char * copied_path, int is_dir) {
 
 	}
 
-/*
-*/
 }
 
 void
@@ -103,7 +101,6 @@ path_recursive (char * target_dir, char * destinated_dir, char * sub_dir, void (
 	}
 	else {
 
-		// initial recursive: ignore sub_dir = ""
 		inner_dir_path = strdup(target_dir);
 
 	}
@@ -169,4 +166,5 @@ path_recursive (char * target_dir, char * destinated_dir, char * sub_dir, void (
         }
 
 	free(inner_dir_path);
+
 }
