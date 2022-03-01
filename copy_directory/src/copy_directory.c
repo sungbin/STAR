@@ -108,8 +108,7 @@ path_recursive (char * target_dir, char * destinated_dir, char * sub_dir, void (
         DIR * dp = opendir(inner_dir_path);
         struct dirent *ep;
 
-        if (dp != NULL)
-        {
+        if (dp != NULL) {
                 while (ep = readdir(dp)) {
                         if (strcmp(ep->d_name,".") == 0) {
                                 continue;
