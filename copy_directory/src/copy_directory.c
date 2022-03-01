@@ -33,7 +33,8 @@ copy_directory (char * target_dir, char * destinated_dir) {
 
 }
 
-void copy (char * origin_path, char * copied_path, int is_dir) {
+void
+copy (char * origin_path, char * copied_path, int is_dir) {
 	
 	printf("origin: %s\n", origin_path);
 	printf("copied: %s\n\n", copied_path);
