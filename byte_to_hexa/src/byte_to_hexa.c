@@ -30,11 +30,10 @@ byte_to_hexa (char * input_f_name, char * output_f_name) {
 			}
 		}
 
-		if (buf_size < 512) {
+		if (buf_size <= 0) {
 			break;
 		}
 	}
-	fprintf(output_fp, "\n");
 
 	fclose(input_fp);
 	fclose(output_fp);
