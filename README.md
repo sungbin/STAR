@@ -38,12 +38,13 @@ A path of a file contains its parent directory structure from root or to relativ
 <blockquote> https://github.com/sungbin/STAR/tree/main/print_file_path_recursively</blockquote>
 
 + Write a program that copies the entire files and the directory structure of a given path to another specified path.  
-<blockquote>(on-going) https://github.com/sungbin/STAR/tree/main/copy_directory</blockquote>
+<blockquote> https://github.com/sungbin/STAR/tree/main/copy_directory</blockquote>
 
 (3) Retrieving file attribute
-  - What is a regular file? How one can check if a file is a regular file or not?
-<blockquote>
-Any file that contains bytes of data into a specifie format is reguar file.
-</blockquote>
++ Stat System call <https://linuxhint.com/stat-system-call-linux/>
++ What is a regular file? How one can check if a file is a regular file or not?
 
-  - How one can find the size of a file?
+  - Linux File System administrate file-path and file-data (including metadata) relative to the file-path. Metadata contains information determine whether it is regular or not.
+
++ How one can find the size of a file?
+  - _stat_(2), _fstat(2)_ look into the file information with file size.
