@@ -48,3 +48,6 @@ A path of a file contains its parent directory structure from root or to relativ
 
 + How one can find the size of a file?
   - _stat_(2), _fstat(2)_ look into the file information with file size.
+
+### STAR
+<blockquote> https://github.com/sungbin/STAR/tree/main/star </blockquote>
