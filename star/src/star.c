@@ -7,6 +7,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <limits.h>
+#include <libgen.h>
 
 #include "../include/star.h"
 
@@ -37,10 +39,8 @@ archive (char * target_dir, char * star_path) {
 	char * data_name = ".data";
 	FILE * d_fp = fopen(data_name, "wb");
 
-	char buf[512];
 
-	// (1) - path and its name
-	archive_path(target_dir, "", "", p_fp, d_fp);
+	archive_path(target_dir, basename(target_dir), "", p_fp, d_fp);
 	fclose(p_fp);
 	fclose(d_fp);
 
@@ -49,6 +49,7 @@ archive (char * target_dir, char * star_path) {
 	p_fp = fopen(path_name, "rb");
 	buf_size = 0;
 	do {
+		char buf[512];
 		buf_size = fread(buf, 1, 512, p_fp);
 		fwrite(buf, 1, buf_size, star_fp);
 
@@ -60,6 +61,7 @@ archive (char * target_dir, char * star_path) {
 	d_fp = fopen(data_name, "rb");
 	buf_size = 0;
 	do {
+		char buf[512];
 		buf_size = fread(buf, 1, 512, d_fp);
 		fwrite(buf, 1, buf_size, star_fp);
 	} while(buf_size > 0);
@@ -69,10 +71,7 @@ archive (char * target_dir, char * star_path) {
 	remove(data_name);
 	remove(path_name);
 	
-	// (2) - path and its data
-	
-
-	printf("len: %u, paths: %s, data size: %u\n", file_no, star_path, data_size);
+	printf("ARCHIVE: %s (file_no: %u, data-size: %u)\n", star_path, file_no, data_size);
 
 }
 
@@ -124,14 +123,13 @@ archive_path (char * target_dir, char * des_dir, char * sub_dir, FILE * p_fp, FI
 			int origin_path_len, achiv_path_len; 
 
 			origin_path_len = strlen(target_dir)+strlen(sub_child_dir)+2;
-			achiv_path_len = strlen(des_dir)+strlen(sub_child_dir)+2;
+			achiv_path_len = strlen(des_dir)+strlen(sub_child_dir)+3;
 
 			origin_path = malloc(sizeof(char) * origin_path_len);
 			achiv_path = malloc(sizeof(char) * achiv_path_len);
 			
 			snprintf(origin_path, origin_path_len, "%s/%s", target_dir, sub_child_dir);
 			snprintf(achiv_path, achiv_path_len, "%s/%s", des_dir, sub_child_dir);
-		
 
                         if (ep->d_type == DT_DIR) {
 
@@ -139,19 +137,13 @@ archive_path (char * target_dir, char * des_dir, char * sub_dir, FILE * p_fp, FI
                         } 
 			else {
 
-				printf("origin-path: %s\n", origin_path);
-				printf("target-path: %s\n", achiv_path);
-				
-				int b_size = fwrite(achiv_path, 1, achiv_path_len+1, p_fp);
+				int b_size = fwrite(strcat(achiv_path, ";"), 1, strlen(achiv_path)+1, p_fp);
 				file_no += b_size;
-				b_size = fwrite(";", 1, 1, p_fp);
-				file_no += b_size;
-				if (file_no > ((2*2*2)*(2*2*2*2)*(2*2*2*2)*(2*2*2*2)*(2*2*2*2)*(2*2*2*2)*(2*2*2*2)*(2*2)*sizeof(unsigned int))) {
+				if (file_no > (UINT_MAX)) {
 					fprintf(stderr, "too many files. (%d)\n", file_no);
 					exit(1);
 				}
 
-				////struct stat _stat;
 				FILE * fp = fopen(origin_path, "rb");
 				int fd = fileno(fp);
         			struct stat _stat;
@@ -189,11 +181,87 @@ archive_path (char * target_dir, char * des_dir, char * sub_dir, FILE * p_fp, FI
 
 void
 list (char * star_path) {
+	
+	if (access(star_path, F_OK) == 1) {
+		fprintf(stderr, "target star file not exists\n");
+		exit(1);
+	}
 
+	FILE * s_fp = fopen(star_path, "rb");
+	
+	unsigned int path_n;
+	fread(&path_n, 1, 4, s_fp);
+
+	int b_size = 0;
+
+	do {
+		char buf[512];
+		if (path_n > 512) {
+			b_size = fread(buf, 1, 512, s_fp);
+			path_n -= b_size;
+		}
+		else {
+			b_size = fread(buf, 1, path_n, s_fp);
+			path_n -= b_size;
+		}
+
+		int b_b = 0;
+		while (b_b < b_size) {
+			if(buf[b_b] == ';') {
+				printf("\n");
+			}
+			else {
+				printf("%c", buf[b_b]);
+			}
+			b_b++;
+		}
+
+	} while (path_n > 0);
+
+	fclose(s_fp);
 }
 
 void
 extract (char * star_path) {
+	/*
+	if (access(star_path, F_OK) == 1) {
+		fprintf(stderr, "target star file not exists\n");
+		exit(1);
+	}
 
+	char * path_name = ".path";
+	FILE * p_fp = fopen(path_name, "wb");
+
+	FILE * s_fp = fopen(star_path, "rb");
+	
+	unsigned int path_n;
+	fread(&path_n, 1, 4, s_fp);
+	fwrite(&path_n, 1, 4, p_fp);
+
+	int b_size = 0;
+	do {
+		char buf[512];
+		b_size = fread(buf, 1, 512, s_fp);
+		b_size = fwrite(buf, 1, b_size, p_fp);
+		path_n -= b_size;
+
+	} while (path_n > 0);
+	fclose(p_fp);
+
+	unsigned int data_size;
+	fread(&data_size, 1, 4, s_fp);
+
+	do {
+		char buf[512];
+		b_size = fread(buf, 1, 512, s_fp);
+
+		
+
+		data_size -= b_size;
+
+	} while (data_size > 0);
+
+	fclose(s_fp);
+	*/
 }
 

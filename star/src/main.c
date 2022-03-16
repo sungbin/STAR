@@ -11,7 +11,6 @@ int
 main (int argc, char* argv[])
 {
 
-
 	if (argc < 3) {
 		print_usage();
 		exit(1);
@@ -20,10 +19,10 @@ main (int argc, char* argv[])
 	if (strcmp(argv[1], "archive") == 0) {
 		archive(argv[2], argv[3]);
 	}
-	else if (strcmp(argv[2], "list") == 0) {
+	else if (strcmp(argv[1], "list") == 0) {
 		list(argv[2]);
 	}
-	else if (strcmp(argv[2], "extract") == 0) {
+	else if (strcmp(argv[1], "extract") == 0) {
 		extract(argv[3]);
 	}
 	else {
