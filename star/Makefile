@@ -14,16 +14,16 @@ OBJS    = $(addprefix $(BINDIR), $(_OBJS))
 all: $(BIN)
 
 $(BIN): $(BINDIR) main star
-	$(CC) $(OBJS) -o $(BIN)
+	$(CC) $(OBJS) -g -o $(BIN)
 
 $(BINDIR):
 	mkdir -p $(BINDIR)
 
 main : src/main.c
-	$(CC) -c -o bin/main.o src/main.c
+	$(CC) -c -g -o bin/main.o src/main.c
 
 star : src/star.c
-	$(CC) -c -o bin/star.o src/star.c
+	$(CC) -c -g -o bin/star.o src/star.c
   
 clean:
 	rm -rf $(BINDIR)

@@ -26,17 +26,6 @@ archive_path (char * target_dir, char * des_dir, char * sub_dir, FILE * s_fp);
 void
 archive (char * target_dir, char * star_path) {
 
-	/*
-	if (access(destinated_dir_path, F_OK) == 0) {
-		fprintf(stderr, "destinated-file already exists");
-		exit(1);
-	}
-	else if (! mkdir(destinated_dir_path, S_IRUSR | S_IWUSR | S_IXUSR | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH)) {
-		fprintf(stderr, "mkdir fails: %s", destinated_dir_path);
-		exit(1);
-	}
-	*/
-
 	FILE * star_fp = fopen(star_path, "wb");
 	archive_path(target_dir, basename(target_dir), "", star_fp);
 	fclose(star_fp);
@@ -162,7 +151,6 @@ list (char * star_path) {
 
 	FILE * s_fp = fopen(star_path, "rb");
 	do {	
-		printf("roof\n");
 		unsigned int path_n;
 		int b_size = fread(&path_n, 1, 4, s_fp);
 		if (b_size != 4) {
@@ -191,7 +179,8 @@ list (char * star_path) {
 			exit(1);
 		}
 	
-		printf("%s data size: %u\n", file_path, data_s);
+		//printf("%s data size: %u\n", file_path, data_s);
+		printf("%s\n", file_path);
 		do {
 			char buf[512];
 			if (data_s > 512) {
@@ -212,7 +201,7 @@ list (char * star_path) {
 
 void
 extract (char * star_path) {
-/*
+
 	if (access(star_path, F_OK) == 1) {
 		fprintf(stderr, "target star file not exists\n");
 		exit(1);
@@ -222,59 +211,70 @@ extract (char * star_path) {
 	do {	
 		unsigned int path_n;
 		int b_size = fread(&path_n, 1, 4, s_fp);
-		if (b_size < 1) {
+		if (b_size != 4) {
 			break;
 		}
 	
 		char * file_path = malloc(path_n * sizeof(char));
+		// strcpy(file_path, "");
 		do {
 			char buf[512];
-			b_size = fread(buf, 1, path_n, s_fp);
+			if (path_n > 512) {
+				b_size = fread(buf, 1, 512, s_fp);
+			}
+			else {
+				b_size = fread(buf, 1, path_n, s_fp);
+			}
 			strncat(file_path, buf, b_size);
 			path_n -= b_size;
-			
-		} while (path_n > 0);
 
+		} while (path_n > 0);
 
 		unsigned int data_s;
 		b_size = fread(&data_s, 1, 4, s_fp);
-		if (b_size < 1) {
+		if (b_size != 4) {
 			fprintf(stderr, "cannot read data with %s\n", file_path);
 			exit(1);
 		}
-	
-		char * untar_fpath = malloc((strlen(star_path) + 1 +path_n) * sizeof(char));
-		sprintf(untar_fpath, "%s/%s", star_path, file_path);
 
-		// mkdirs()
-		char * parent_dir_path = parent_dir(untar_fpath);
-		if (! mkdirs(parent_dir_path)) {
-			fprintf(stderr, "mkdirs() failed\n");
-			exit(1);
+		if (mkdirs(dirname(file_path))) {
+			fprintf(stderr, "ERROR: cannot mkdirs %s\n", dirname(file_path));
 		}
-		free(parent_dir_path);
-		
-	
-		FILE * fp = fopen(untar_fpath, "wb");
+
+		FILE * fp = fopen(file_path, "wb");
 		do {
 			char buf[512];
-			b_size = fread(buf, 1, 512, s_fp);
-			b_size = fwrite(buf, 1, b_size, fp);
-			data_s -= b_size;
-			
+			if (data_s > 512) {
+				b_size = fread(buf, 1, 512, s_fp);
+			}
+			else {
+				b_size = fread(buf, 1, data_s, s_fp);
+			}
+			fwrite(buf, 1, b_size, fp);
+			data_s = data_s - ((unsigned int)b_size);
 		} while (data_s > 0);
 		fclose(fp);
-
-		free(untar_fpath);
 		free(file_path);
 
 	} while (1);
 
 	fclose(s_fp);
-	*/
+
+
+}
+
+char * parent_dir(char * path) {
+
+	int lidx = strrchr(path, '/') - path;
+	char * parent_dir_path = malloc(lidx * sizeof(char));
+	strncpy(parent_dir_path, path, lidx);
+
+	return parent_dir_path;
 }
 
 int mkdirs(char * dir_path) {
+
+	printf("enter: %s\n", dir_path);
 
 	char * p_dir;
 	if (access(dir_path, F_OK) == 0) {
@@ -283,21 +283,12 @@ int mkdirs(char * dir_path) {
 	}
 	else if (access((p_dir=parent_dir(dir_path)), F_OK) == 0) {
 		free(p_dir);
-		return mkdir(dir_path, S_IRUSR | S_IWUSR | S_IXUSR | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH) == -1;
+		return mkdir(dir_path, S_IRUSR | S_IWUSR | S_IXUSR | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH);
 	}
 	else {
-		
-		int val =  mkdirs(p_dir);
+
+		int val = mkdirs(p_dir) || mkdir(dir_path, S_IRUSR | S_IWUSR | S_IXUSR | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH);
 		free(p_dir);
 		return val;
 	}
-}
-
-char * parent_dir(char * path) {
-
-	int lidx = strrchr(path, '/') - path;
-	char * parent_dir_path = malloc(lidx * sizeof(char));
-	strncpy(parent_dir_path, path, lidx);
-	
-	return parent_dir_path;
 }
