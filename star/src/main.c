@@ -23,7 +23,7 @@ main (int argc, char* argv[])
 		list(argv[2]);
 	}
 	else if (strcmp(argv[1], "extract") == 0) {
-		extract(argv[3]);
+		extract(argv[2]);
 	}
 	else {
 		print_usage();

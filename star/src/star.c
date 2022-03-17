@@ -199,6 +199,70 @@ list (char * star_path) {
 
 }
 
+
+void
+extract (char * star_path) {
+	if (access(star_path, F_OK) == 1) {
+		fprintf(stderr, "target star file not exists\n");
+		exit(1);
+	}
+
+	FILE * s_fp = fopen(star_path, "rb");
+	do {	
+		unsigned int path_n;
+		int b_size = fread(&path_n, 1, 4, s_fp);
+		if (b_size != 4) {
+			break;
+		}
+	
+		char * file_path = malloc(path_n * sizeof(char)+2);
+		strcpy(file_path, "./");
+		do {
+			char buf[512];
+			if (path_n > 512) {
+				b_size = fread(buf, 1, 512, s_fp);
+			}
+			else {
+				b_size = fread(buf, 1, path_n, s_fp);
+			}
+			strncat(file_path, buf, b_size);
+			path_n -= b_size;
+
+		} while (path_n > 0);
+
+		unsigned int data_s;
+		b_size = fread(&data_s, 1, 4, s_fp);
+		if (b_size != 4) {
+			fprintf(stderr, "cannot read data with %s\n", file_path);
+			exit(1);
+		}
+	
+		if (mkdirs(dirname(file_path))) {
+			fprintf(stderr, "ERROR: cannot mkdirs %s\n", dirname(file_path));
+		}
+
+		//printf("%s data size: %u\n", file_path, data_s);
+		FILE * fp = fopen(file_path, "wb");
+		do {
+			char buf[512];
+			if (data_s > 512) {
+				b_size = fread(buf, 1, 512, s_fp);
+			}
+			else {
+				b_size = fread(buf, 1, data_s, s_fp);
+			}
+			fwrite(buf, 1, b_size, fp);
+			data_s = data_s - ((unsigned int)b_size);
+		} while (data_s > 0);
+		fclose(fp);
+		free(file_path);
+
+	} while (1);
+
+	fclose(s_fp);
+
+}
+/*
 void
 extract (char * star_path) {
 
@@ -262,6 +326,7 @@ extract (char * star_path) {
 
 
 }
+*/
 
 char * parent_dir(char * path) {
 
@@ -273,8 +338,6 @@ char * parent_dir(char * path) {
 }
 
 int mkdirs(char * dir_path) {
-
-	printf("enter: %s\n", dir_path);
 
 	char * p_dir;
 	if (access(dir_path, F_OK) == 0) {
