@@ -283,7 +283,7 @@ int mkdirs(char * dir_path) {
 	}
 	else if (access((p_dir=parent_dir(dir_path)), F_OK) == 0) {
 		free(p_dir);
-		return mkdir(dir_path, S_IRUSR | S_IWUSR | S_IXUSR | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH) == -1;
+		return mkdir(dir_path, S_IRUSR | S_IWUSR | S_IXUSR | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH);
 	}
 	else {
 		
