@@ -173,7 +173,12 @@ list (char * star_path) {
 		// strcpy(file_path, "");
 		do {
 			char buf[512];
-			b_size = fread(buf, 1, path_n, s_fp);
+			if (path_n > 512) {
+				b_size = fread(buf, 1, 512, s_fp);
+			}
+			else {
+				b_size = fread(buf, 1, path_n, s_fp);
+			}
 			strncat(file_path, buf, b_size);
 			path_n -= b_size;
 
