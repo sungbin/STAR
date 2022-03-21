@@ -120,7 +120,9 @@ archive_path (char * target_dir, char * des_dir, char * sub_dir, FILE * s_fp) {
 				do {
 					char buf[512];
 					b_size = fread(buf, 1, 512, fp);
-					//TODO: if-state, break
+					if (b_size < 1) {
+						break;
+					}
 					b_size = fwrite(buf, 1, b_size, s_fp);
 
 				} while (b_size > 0);
