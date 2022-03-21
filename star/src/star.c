@@ -13,9 +13,10 @@
 #include "../include/star.h"
 
 int
-mkdirs(char * dir_path);
+mkdirs (char * dir_path);
 
-char * parent_dir(char * dir_path);
+char *
+parent_dir (char * dir_path);
 
 int file_no = 0;
 unsigned int data_size = 0;
@@ -328,7 +329,8 @@ extract (char * star_path) {
 }
 */
 
-char * parent_dir(char * path) {
+char *
+parent_dir (char * path) {
 
 	int lidx = strrchr(path, '/') - path;
 	char * parent_dir_path = malloc(lidx * sizeof(char));
@@ -337,7 +339,8 @@ char * parent_dir(char * path) {
 	return parent_dir_path;
 }
 
-int mkdirs(char * dir_path) {
+int 
+mkdirs (char * dir_path) {
 
 	char * p_dir;
 	if (access(dir_path, F_OK) == 0) {
