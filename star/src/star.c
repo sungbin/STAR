@@ -180,7 +180,6 @@ list (char * star_path) {
 			exit(1);
 		}
 	
-		//printf("%s data size: %u\n", file_path, data_s);
 		printf("%s\n", file_path);
 		do {
 			char buf[512];
