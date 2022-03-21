@@ -83,7 +83,7 @@ archive_path (char * target_dir, char * des_dir, char * sub_dir, FILE * s_fp) {
 			unsigned int origin_path_len, achiv_path_len; 
 
 			origin_path_len = strlen(target_dir)+strlen(sub_child_dir)+2;
-			achiv_path_len = strlen(des_dir)+strlen(sub_child_dir)+3;
+			achiv_path_len = strlen(des_dir)+strlen(sub_child_dir)+2;
 
 			origin_path = malloc(sizeof(char) * origin_path_len);
 			achiv_path = malloc(sizeof(char) * achiv_path_len);
