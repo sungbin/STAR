@@ -18,8 +18,8 @@ mkdirs (char * dir_path);
 char *
 parent_dir (char * dir_path);
 
-int file_no = 0;
-unsigned int data_size = 0;
+//int file_no = 0;
+//unsigned int data_size = 0;
 
 void
 archive_path (char * target_dir, char * des_dir, char * sub_dir, FILE * s_fp);
@@ -31,7 +31,7 @@ archive (char * target_dir, char * star_path) {
 	archive_path(target_dir, basename(target_dir), "", star_fp);
 	fclose(star_fp);
 
-	printf("ARCHIVE: %s (file_no: %d, data-size: %u)\n", star_path, file_no, data_size);
+//	printf("ARCHIVE: %s (file_no: %d, data-size: %u)\n", star_path, file_no, data_size);
 
 }
 
@@ -103,7 +103,7 @@ archive_path (char * target_dir, char * des_dir, char * sub_dir, FILE * s_fp) {
 				b_size = fwrite(&achiv_path_len, 1, 4, s_fp);
 				b_size = fwrite(achiv_path, 1, achiv_path_len, s_fp);
 
-				file_no ++;
+// 				file_no ++;
 
 				// (2) file data
 				FILE * fp = fopen(origin_path, "rb");
@@ -111,7 +111,7 @@ archive_path (char * target_dir, char * des_dir, char * sub_dir, FILE * s_fp) {
         			struct stat _stat;
         			fstat(fd, &_stat);
 				off_t f_size = _stat.st_size;
-				data_size += f_size;
+// 				data_size += f_size;
 
 				unsigned int uf_size = (unsigned int) f_size;
 				b_size = fwrite(&uf_size, 1, 4, s_fp);
@@ -120,6 +120,7 @@ archive_path (char * target_dir, char * des_dir, char * sub_dir, FILE * s_fp) {
 				do {
 					char buf[512];
 					b_size = fread(buf, 1, 512, fp);
+					//TODO: if-state, break
 					b_size = fwrite(buf, 1, b_size, s_fp);
 
 				} while (b_size > 0);
@@ -153,7 +154,7 @@ list (char * star_path) {
 	FILE * s_fp = fopen(star_path, "rb");
 	do {	
 		unsigned int path_n;
-		int b_size = fread(&path_n, 1, 4, s_fp);
+		int b_size = fread(&path_n, 1, 4, s_fp); //advise: can use fgetc()
 		if (b_size != 4) {
 			break;
 		}
