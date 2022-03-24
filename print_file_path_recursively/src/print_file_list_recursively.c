@@ -45,5 +45,6 @@ print_path_recursive (char * dir_name) {
                 exit(1);
         }
 
+        closedir(dir_path);
 }
 
